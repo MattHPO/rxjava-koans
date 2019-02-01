@@ -1,12 +1,13 @@
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 import rx.Observable;
 import rx.functions.Func1;
 import rx.observers.TestSubscriber;
 import util.LessonResources.CarnivalFood;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static util.LessonResources.ElevatorPassenger;
@@ -34,9 +35,9 @@ public class lessonB_MapAndFlatMapAndBasicOperators {
                 .map(word -> word.replace("e", "3"))
                 .map(word -> word.replace("l", "1"))
                 .subscribe(mSubscriber);
-        assertThat(mSubscriber.getOnNextEvents()).contains(_____);
-        assertThat(mSubscriber.getOnNextEvents()).contains(_____);
-        assertThat(mSubscriber.getOnNextEvents()).contains(_____);
+        assertThat(mSubscriber.getOnNextEvents()).contains("k3w1");
+        assertThat(mSubscriber.getOnNextEvents()).contains("133t");
+        assertThat(mSubscriber.getOnNextEvents()).contains("sp3ak");
     }
 
     /**
@@ -78,14 +79,14 @@ public class lessonB_MapAndFlatMapAndBasicOperators {
          */
         Observable<Observable<CarnivalFood>> map = foodCartItemsObservable.map(new Func1<List<CarnivalFood>, Observable<CarnivalFood>>() {
             @Override
-            public Observable<CarnivalFood> call(List<CarnivalFood> foods) {
+            public Observable<CarnivalFood> call(/* 這裡才是輸入Event *重點* */ List<CarnivalFood> foods) {
                 Observable<CarnivalFood> from = Observable.from(foods);
                 return from;
             }
         });
         map.subscribe(mSubscriber);
-
-        assertThat(mSubscriber.getOnNextEvents()).hasSize(____);
+        // 兩個 List Object ， 兩個 Event (Data)
+        assertThat(mSubscriber.getOnNextEvents()).hasSize(2);
 
         /** Was the result above what you expected? A bit strange huh? You'd think that you'd get
          * a value matching the number of items of foods in each list at first glance.
